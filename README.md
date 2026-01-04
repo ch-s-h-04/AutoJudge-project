@@ -1,147 +1,228 @@
-# AutoJudge: Predicting Programming Problem Difficulty
+# AutoJudge: Automated Programming Problem Difficulty Prediction
 
-## Project Overview
-AutoJudge is a machine learning–based system that automatically predicts the difficulty of programming problems using **only textual information**.
-
-Online competitive programming platforms (such as Codeforces) classify problems into *Easy*, *Medium*, or *Hard* and also assign a numerical difficulty rating. This process is traditionally driven by human judgment, editorial complexity, and user feedback.
-
-The goal of this project is to **automate difficulty prediction** by building:
-- A **classification model** to predict difficulty class (*Easy / Medium / Hard*)
-- A **regression model** to predict a numerical difficulty score
-
-### Important Constraints Followed
-- Only **textual data** is used (problem title, description, input format, output format)
-- **No deep learning models** are used, as explicitly stated in the project requirements
-- Only **classical machine learning models** are applied
+## 👨‍💻 Author Details
+- **Name:** Chiranshu Sarraf  
+- **Project:** AutoJudge – Machine Learning for Problem Classification & Rating  
+- **Organization:** ACM Project Submission  
+- **Institute:** IIT Roorkee  
+- **Python Version:** 3.13.1  
 
 ---
 
-## Dataset Used
+## 📽️ Mandatory Demo Video
+**[Link to Demo Video (2–3 Minutes) – INSERT LINK HERE]**
+
+The demo video includes:
+- A brief project overview
+- Explanation of the ML pipeline and model choices
+- Live walkthrough of the Streamlit web interface with predictions
+
+---
+
+## 📖 Project Overview
+AutoJudge is a machine learning–based system designed to **automatically assess the difficulty of competitive programming problems** using **only textual information**.
+
+Online platforms such as **Codeforces** classify problems as *Easy*, *Medium*, or *Hard* and also assign a numerical difficulty rating. This process is typically driven by editorial complexity, human judgment, and user feedback.
+
+The goal of this project is to **automate this process** by building:
+
+1. **A classification model** to predict difficulty class (*Easy / Medium / Hard*)
+2. **A regression model** to predict a numerical difficulty rating
+
+The project strictly follows a **Classical Machine Learning constraint**, avoiding Deep Learning models as per the problem statement.
+
+---
+
+## 📌 Important Constraints Followed
+- Only **textual data** is used:
+  - Problem title  
+  - Problem description  
+  - Input format  
+  - Output format  
+- **No deep learning models** are used  
+- Only **classical ML algorithms** are applied  
+- Predictions are based solely on problem statements, not user statistics or metadata  
+
+---
+
+## 📊 Dataset & Labeling
 
 ### Initially Provided Dataset (Not Used)
-A reference dataset was initially provided as part of the problem statement. However, after experimentation, it was observed that:
-- The trained models showed **poor accuracy**
-- Predictions were **heavily biased toward a single class** (mostly *Medium*)
-- The dataset failed to generalize well on unseen problems
+The dataset initially suggested in the problem statement was explored first. However, experimentation revealed that:
 
-Due to these limitations, the provided dataset was **not suitable** for reliable difficulty prediction.
+- Model accuracy was poor
+- Predictions were heavily biased toward a single class (mostly *Medium*)
+- The dataset did not generalize well on unseen problems
+
+Due to these issues, the dataset was deemed unsuitable for reliable difficulty prediction.
+
+---
 
 ### Final Dataset Used
-A **Codeforces-based dataset** was used instead, containing real competitive programming problems with richer and more diverse textual content.
+A **Codeforces-based dataset** was selected instead, sourced from Hugging Face:
 
-The dataset includes:
-- Problem title
-- Problem description
-- Input format
-- Output format
-- Numerical difficulty rating
-
-This dataset resulted in **significantly improved performance** for both classification and regression tasks.
-
-Dataset source:  
+🔗 **Dataset Link:**  
 https://huggingface.co/datasets/open-r1/codeforces
 
-The dataset already contained **separate training and testing splits**, so no additional train–test splitting was performed.
+**Dataset characteristics:**
+- Real-world competitive programming problems
+- Rich and diverse textual descriptions
+- Numerical difficulty ratings
+- Predefined training and testing splits (no manual split required)
+
+**Fields used:**
+- Problem title  
+- Problem description  
+- Input format  
+- Output format  
+- Numerical difficulty rating  
 
 ---
 
-## Difficulty Label Creation
-The original dataset contained only a **numerical problem rating**.
+## 🧩 Difficulty Label Creation
+The original dataset provided **only numerical difficulty ratings**.
 
-To enable difficulty classification, a new categorical column named **`difficulty`** was created using the following thresholds:
+To enable classification, a new categorical column `difficulty` was created using the following thresholds:
 
-- **Easy**: Rating < 1200  
-- **Medium**: 1200 ≤ Rating < 1800  
-- **Hard**: Rating ≥ 1800  
+- **Easy:** Rating < 1200  
+- **Medium:** 1200 ≤ Rating < 1800  
+- **Hard:** Rating ≥ 1800  
 
-These ranges were chosen after analyzing the rating distribution and align with commonly accepted difficulty levels on competitive programming platforms.
+These ranges align with commonly accepted difficulty levels on competitive programming platforms such as Codeforces.
 
 ---
 
-## Approach and Models Used
+## ⚙️ Approach & Models
 
 ### 1. Data Preprocessing
-- Selected only relevant columns required for prediction
-- Removed unnecessary metadata
-- Handled missing values by replacing them with empty strings
-- Combined textual fields into a single text representation
-- Cleaned text (lowercasing, removing special characters, whitespace normalization)
+All textual fields (title, description, input format, output format) were merged into a single text block. The following preprocessing steps were applied:
 
-### 2. Feature Extraction
-- Used **TF-IDF (Term Frequency–Inverse Document Frequency)** to convert text into numerical feature vectors
-- TF-IDF was chosen due to its efficiency and suitability for classical NLP models
+- Conversion to lowercase  
+- Removal of special characters and newline symbols  
+- Whitespace normalization  
+- Handling missing values by replacing them with empty strings  
 
-### 3. Classification Models Evaluated
-The following models were trained and compared:
-- Logistic Regression
-- Random Forest Classifier
-- Support Vector Machine (Linear SVM)
-
-**Final Selected Model:** Random Forest Classifier  
-Chosen due to higher accuracy and better class-wise balance.
-
-### 4. Regression Models Evaluated
-The following models were trained:
-- Linear Regression
-- Random Forest Regressor
-- Gradient Boosting Regressor
-
-**Final Selected Model:** Random Forest Regressor  
-Chosen due to lowest MAE and RMSE.
+This ensured consistent and meaningful input to the feature extractor.
 
 ---
 
-## Evaluation Metrics
+### 2. Feature Extraction
+**TF-IDF (Term Frequency–Inverse Document Frequency)** was used to convert text into numerical feature vectors.
 
-### Classification
-- Accuracy
-- Confusion Matrix
+**Why TF-IDF?**
+- Efficient and lightweight
+- Well-suited for classical NLP pipelines
+- Highlights important keywords (e.g., *dp*, *graph*, *recursion*) correlated with difficulty
 
-### Regression
-- Mean Absolute Error (MAE)
-- Root Mean Squared Error (RMSE)
+---
 
-### Final Regression Results
+### 3. Model Selection
+
+**Classification models evaluated:**
+- Logistic Regression  
+- Linear Support Vector Machine (SVM)  
+- Random Forest Classifier  
+
+**Regression models evaluated:**
+- Linear Regression  
+- Gradient Boosting Regressor  
+- Random Forest Regressor  
+
+After comparison, **Random Forest** models were selected for both tasks due to better generalization and robustness.
+
+---
+
+## 📈 Evaluation Metrics
+
+### Classification Performance
+
+| Model | Accuracy (%) |
+|------|-------------|
+| Logistic Regression | 60.92 |
+| Linear SVM | 62.66 |
+| **Random Forest (Selected)** | **66.38** |
+
+---
+
+### Regression Performance
 
 | Model | MAE | RMSE |
 |------|-----|------|
-| Linear Regression | ~694 | ~869 |
-| Random Forest Regressor | **~508** | **~664** |
-| Gradient Boosting Regressor | ~525 | ~665 |
+| Linear Regression | 694.32 | 869.37 |
+| Gradient Boosting | 525.05 | 664.60 |
+| **Random Forest (Selected)** | **508.16** | **664.19** |
 
 ---
 
-## Web Interface Explanation
-A **Streamlit-based web application** is provided to demonstrate the working of the models.
-
-The interface allows the user to:
-1. Enter the problem title
-2. Paste the problem description
-3. Paste the input format
-4. Paste the output format
-5. Click the **Predict** button
-
-The application then:
-- Processes the input text
-- Applies the trained TF-IDF vectorizer
-- Predicts:
-  - Difficulty class (*Easy / Medium / Hard*)
-  - Numerical difficulty score
+### 💡 Key Insights
+- **Stability vs. Speed:** Random Forest took longer to train but produced more reliable predictions.
+- **Class Separation:** Confusion matrices showed better separation between *Medium* and *Hard* problems.
+- **Non-linearity:** Tree-based models captured complex keyword interactions better than linear models.
 
 ---
 
-## Steps to Run the Project Locally
+## 📓 Implementation Note (Important Clarification)
+The **entire machine learning pipeline** — including data preprocessing, feature extraction, classification, and regression — is implemented using **Jupyter notebooks**.
 
+This design choice was made to:
+- Enable step-by-step experimentation and visualization
+- Clearly document model comparisons and intermediate results
+- Improve interpretability for academic evaluation
+
+The trained models are then used by the Streamlit application (`app.py`) for inference.  
+This notebook-driven workflow is standard practice for academic and exploratory ML projects.
+
+---
+
+## 📦 Saved Models & Git LFS
+This repository uses **Git Large File Storage (Git LFS)** to store trained model files.
+
+- **Why Git LFS?**  
+  Standard Git is not suitable for large binary files (>100 MB). Git LFS ensures efficient storage and cloning.
+
+- **Tracked model files:**
+  - `difficulty_classifier.pkl`
+  - `rating_regressor.pkl`
+  - `tfidf_vectorizer.pkl`
+
+---
+
+## 🌐 Web Interface
+A **Streamlit-based web application** provides an interactive interface for predictions.
+
+**User workflow:**
+1. Enter problem title  
+2. Paste problem description  
+3. Paste input format  
+4. Paste output format  
+5. Click **Predict**
+
+**Output:**
+- Predicted difficulty class (*Easy / Medium / Hard*)
+- Predicted numerical difficulty rating
+
+---
+
+## 🚀 Steps to Run Locally
+
+### 1. Prerequisites
+- Python **3.13.1**
+- Git LFS installed
+
+### 2. Setup & Execution
 ```bash
-# 1. Clone the repository
+# Install Git LFS (one-time)
+git lfs install
+
+# Clone the repository
 git clone https://github.com/ch-s-h-04/AutoJudge-project.git
+cd AutoJudge-project
 
-# 2. Move into the project directory
-cd AutoJudge-project/final\ project
+# Pull LFS model files
+git lfs pull
 
-# 3. Install required dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# 4. Run the web application
+# Run the web application
 streamlit run app.py
-
