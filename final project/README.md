@@ -137,7 +137,7 @@ The application then:
 git clone https://github.com/ch-s-h-04/AutoJudge-project.git
 
 # 2. Move into the project directory
-cd AutoJudge-project
+cd AutoJudge-project/final\ project
 
 # 3. Install required dependencies
 pip install -r requirements.txt
