@@ -9,15 +9,6 @@
 
 ---
 
-## 📽️ Mandatory Demo Video
-**[Link to Demo Video (2–3 Minutes) – INSERT LINK HERE]**
-
-The demo video includes:
-- A brief project overview
-- Explanation of the ML pipeline and model choices
-- Live walkthrough of the Streamlit web interface with predictions
-
----
 
 ## 📖 Project Overview
 AutoJudge is a machine learning–based system designed to **automatically assess the difficulty of competitive programming problems** using **only textual information**.
@@ -200,6 +191,16 @@ A **Streamlit-based web application** provides an interactive interface for pred
 **Output:**
 - Predicted difficulty class (*Easy / Medium / Hard*)
 - Predicted numerical difficulty rating
+
+---
+
+## 📽️ Mandatory Demo Video
+**[Link to Demo Video (2–3 Minutes) – INSERT LINK HERE]**
+
+The demo video includes:
+- A brief project overview
+- Explanation of the ML pipeline and model choices
+- Live walkthrough of the Streamlit web interface with predictions
 
 ---
 
