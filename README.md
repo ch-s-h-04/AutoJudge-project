@@ -78,7 +78,7 @@ These thresholds are consistent with commonly accepted difficulty ranges on comp
 
 ---
 
-## ⚙️ Approach & Models
+## Approach & Models
 
 ### 1. Data Preprocessing
 
@@ -112,7 +112,7 @@ Models were compared using standard evaluation metrics on a held-out test set. I
 
 ---
 
-## 📈 Evaluation Metrics
+## Evaluation Metrics
 
 
 ### Classification Performance
@@ -183,7 +183,7 @@ The application loads the pre-trained TF-IDF vectorizer, classification model, a
 
 ---
 
-## 📽️ Mandatory Demo Video
+## Mandatory Demo Video
 **[Link to Demo Video (2–3 Minutes) – INSERT LINK HERE]**
 
 The demo video includes:
@@ -193,7 +193,7 @@ The demo video includes:
 
 ---
 
-## 🚀 Steps to Run Locally
+## Steps to Run Locally
 
 ### 1. Prerequisites
 - Python **3.13.1**
