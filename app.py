@@ -1,62 +1,52 @@
 import streamlit as st
-import pandas as pd
 import joblib
+from pathlib import Path
 import re
 
-# -----------------------------
-# Load saved models
-# -----------------------------
-vectorizer = joblib.load("models/tfidf_vectorizer.pkl")
-clf = joblib.load("models/difficulty_classifier.pkl")
-reg = joblib.load("models/rating_regressor.pkl")
+# ================= PATH SETUP =================
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_DIR = BASE_DIR / "models"
 
-# -----------------------------
-# Text cleaning function
-# -----------------------------
-def clean_text(text):
+# ================= LOAD MODELS ================
+vectorizer = joblib.load(MODEL_DIR / "tfidf_vectorizer.pkl")
+classifier = joblib.load(MODEL_DIR / "difficulty_classifier.pkl")
+regressor = joblib.load(MODEL_DIR / "rating_regressor.pkl")
+
+# ================= TEXT CLEANING ==============
+def clean_text(text: str) -> str:
     text = text.lower()
     text = re.sub(r"\n", " ", text)
     text = re.sub(r"[^a-z0-9\s]", " ", text)
     text = re.sub(r"\s+", " ", text)
     return text.strip()
 
-# -----------------------------
-# Streamlit UI
-# -----------------------------
+# ================= UI =========================
 st.set_page_config(page_title="AutoJudge", layout="centered")
 
-st.title("🧠 AutoJudge")
-st.subheader("Predict Programming Problem Difficulty")
+st.title("AutoJudge")
+st.subheader("Automated Programming Problem Difficulty Prediction")
 
-st.markdown(
-    """
-    Paste the **problem statement details** below and click **Predict**.
-    """
+st.write(
+    "Paste a programming problem description below to predict "
+    "its difficulty level and estimated rating."
 )
 
-# Input fields
-title = st.text_input("Problem Title")
-description = st.text_area("Problem Description", height=200)
-input_format = st.text_area("Input Description", height=120)
-output_format = st.text_area("Output Description", height=120)
+user_input = st.text_area(
+    "Problem Description",
+    height=250,
+    placeholder="Enter title, description, input format, output format..."
+)
 
-# Predict button
-if st.button("Predict Difficulty"):
-    if title.strip() == "" or description.strip() == "":
-        st.warning("Please provide at least Title and Description.")
+if st.button("Predict"):
+    if not user_input.strip():
+        st.warning("Please enter a problem description.")
     else:
-        # Combine text
-        combined_text = f"{title} {description} {input_format} {output_format}"
-        cleaned = clean_text(combined_text)
+        cleaned = clean_text(user_input)
+        features = vectorizer.transform([cleaned])
 
-        # Vectorize
-        X = vectorizer.transform([cleaned])
+        difficulty = classifier.predict(features)[0]
+        rating = int(regressor.predict(features)[0])
 
-        # Predictions
-        difficulty_pred = clf.predict(X)[0]
-        rating_pred = reg.predict(X)[0]
-
-        # Output
-        st.success("Prediction Completed")
-        st.markdown(f"### 🏷️ Difficulty Class: **{difficulty_pred}**")
-        st.markdown(f"### 📊 Difficulty Score: **{int(rating_pred)}**")
+        st.success("Prediction Complete")
+        st.write(f"**Predicted Difficulty:** {difficulty}")
+        st.write(f"**Predicted Rating:** {rating}")
