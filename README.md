@@ -51,7 +51,7 @@ Given these limitations, the dataset was not used for the final model training, 
 
 For the final implementation, a **Codeforces-based dataset** was used, sourced from Hugging Face:
 
-🔗 Dataset: https://huggingface.co/datasets/open-r1/codeforces
+ Dataset: https://huggingface.co/datasets/open-r1/codeforces
 
 This dataset contains real-world competitive programming problems with detailed textual statements and associated numerical difficulty ratings. It provides sufficient diversity in problem types and difficulty levels, making it suitable for both classification and regression tasks.
 
@@ -184,7 +184,7 @@ The application loads the pre-trained TF-IDF vectorizer, classification model, a
 ---
 
 ## Mandatory Demo Video
-**[Link to Demo Video (2–3 Minutes) – INSERT LINK HERE]**
+Demo link-> https://drive.google.com/file/d/1qRDlscaFhnW0UN16Y2RjWMt-LvE7exKF/view?usp=sharing
 
 The demo video includes:
 - A brief project overview
